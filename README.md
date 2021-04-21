@@ -1,4 +1,5 @@
-# python_pandas_working_Excel_data_repetation
+# python_pandas_working_with_basic_stuffs
 My first Python Repository.
 
-This code will help out to understand the repetation of data in excel sheet. 
+Will try to upload all basic stuffs of Pandas, one by one which was used in Data Analysis.
+These codes are regularly used by all Data Scientists.
