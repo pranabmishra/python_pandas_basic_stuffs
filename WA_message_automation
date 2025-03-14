@@ -1,0 +1,49 @@
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+import csv
+ 
+# Initialize the Chrome driver
+driver = webdriver.Chrome()
+ 
+# Open WhatsApp Web
+baseurl = "https://web.whatsapp.com"
+driver.get(baseurl)
+ 
+# Wait for QR Code scan (increase sleep time if needed)
+print("Please scan the QR code to log in to WhatsApp Web.")
+time.sleep(10)
+
+msg = 'May the vibrant colours of Holi bring energy, enthusiasm, and excitement into your life.Have a joyous and lively celebration!'
+
+# Read contacts and messages from the CSV file
+with open('./dataset/wa_message_2.csv', newline='') as csvfile:
+    readContacts = csv.reader(csvfile)
+    next(readContacts)  # Skip the header row
+
+    
+    for name, phone in readContacts:
+        phonnum = phone.strip()
+        personalized_message = f"Hi {name}, {msg}"
+ 
+        # Construct the WhatsApp URL for the contact
+        sameTab = f"{baseurl}/send?phone={phonnum}"
+        driver.get(sameTab)
+ 
+        # Wait for the chat to load (increase sleep time if necessary)
+        time.sleep(8)
+ 
+        # Find the message input field and send the message
+        content = driver.switch_to.active_element
+        content.send_keys(personalized_message)
+        content.send_keys(Keys.RETURN)
+
+        print(f"Message sent to {name} ({phonnum}) ✅")
+
+ 
+        # Add a delay to avoid potential errors due to quick navigation
+        time.sleep(8)
+ 
+# Close the browser
+driver.quit()
