@@ -1,0 +1,23 @@
+import pandas as pd
+import math
+import os
+
+def split_csv(input_file, max_size_mb=5):
+    # Load CSV in chunks to avoid memory issues if needed
+    df = pd.read_csv(input_file)
+    
+    # Estimate how many rows ≈ 5MB
+    file_size = os.path.getsize(input_file)  # in bytes
+    rows = len(df)
+    bytes_per_row = file_size / rows
+    rows_per_chunk = math.floor((max_size_mb * 1024 * 1024) / bytes_per_row)
+    
+    print(f"Total rows: {rows}, Rows per chunk: {rows_per_chunk}")
+    
+    # Split into parts
+    for i in range(0, rows, rows_per_chunk):
+        chunk = df.iloc[i:i+rows_per_chunk]
+        output_file = f"{os.path.splitext(input_file)[0]}_part{i//rows_per_chunk + 1}.csv"
+        chunk.to_csv(output_file, index=False)
+        print(f"Created {output_file} with {len(chunk)} rows")
+
